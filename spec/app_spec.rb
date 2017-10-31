@@ -16,12 +16,15 @@ describe App do
     context 'with valid HMAC' do
       it 'validates hmac' do
         expect_any_instance_of(App).to receive(:validate_hmac!)
+        allow_any_instance_of(App).to receive(:get_shop_access_token!).and_return(nil)
         get '/auth'
       end
 
-      #it 'request Auth token to Shopify' do
-        #skip
-      #end
+      it 'gets access token from Shopify' do
+        allow_any_instance_of(App).to receive(:validate_hmac!).and_return(nil)
+        expect_any_instance_of(App).to receive(:get_shop_access_token!)
+        get '/auth'
+      end
 
       #it 'creates a webhook for order cancelation' do
         #skip
