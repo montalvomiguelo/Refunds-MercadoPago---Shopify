@@ -11,4 +11,25 @@ class App < Sinatra::Base
 
     redirect install_url
   end
+
+  get '/auth' do
+    shop = params[:shop]
+    code = params[:code]
+    hmac = params[:hmac]
+
+    validate_hmac!(hmac, request)
+
+    'Valid hmac'
+  end
+
+  helpers do
+    def validate_hmac!(hmac, request)
+      h = request.params.reject{|k,v| k == 'hmac' || k == 'signature'}
+      query = URI.escape(h.sort.collect{|k,v| "#{k}=#{v}"}.join('&'))
+      digest = OpenSSL::Digest.new('sha256')
+      mac = OpenSSL::HMAC.hexdigest(digest, API_SECRET, query)
+
+      halt 403, "Authentication failed. Digest provided was #{mac}" unless hmac == mac
+    end
+  end
 end
