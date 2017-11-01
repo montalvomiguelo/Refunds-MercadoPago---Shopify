@@ -31,6 +31,9 @@ GEM
       multi_xml (>= 0.5.2)
     i18n (0.9.0)
       concurrent-ruby (~> 1.0)
+    json (2.1.0)
+    mercadopago-sdk (0.3.4)
+      json
     method_source (0.9.0)
     minitest (5.10.3)
     multi_xml (0.6.0)
@@ -84,6 +87,7 @@ DEPENDENCIES
   database_cleaner
   dotenv
   httparty
+  mercadopago-sdk
   mysql2
   pry-byebug
   rack-test

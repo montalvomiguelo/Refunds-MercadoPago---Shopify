@@ -10,5 +10,5 @@ class Shop < Sequel::Model
     validates_presence [:name, :token]
   end
 
-  attr_encrypted :token, key: secret, attribute: 'token_encrypted'
+  attr_encrypted :token, key: secret
 end

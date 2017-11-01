@@ -8,6 +8,7 @@ gem 'httparty'
 gem 'shopify_api'
 gem 'dotenv'
 gem 'attr_encrypted'
+gem 'mercadopago-sdk'
 
 group :test do
   gem 'rspec'

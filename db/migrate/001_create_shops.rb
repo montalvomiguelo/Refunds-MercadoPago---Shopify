@@ -3,7 +3,8 @@ Sequel.migration do
     create_table(:shops) do
       primary_key :id
       String :name
-      String :token_encrypted
+      String :encrypted_token
+      String :encrypted_token_iv
       index :name
     end
   end
