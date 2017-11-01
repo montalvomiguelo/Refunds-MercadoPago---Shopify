@@ -1,7 +1,9 @@
 class App < Sinatra::Base
+  enable :logging
+
   API_KEY = ENV['API_KEY']
   API_SECRET = ENV['API_SECRET']
-  APP_URL = 'mp-auto-refund.herokuapp.com'
+  APP_URL = 'c7793a4e.ngrok.io'
 
   get '/install' do
     shop = params[:shop]
@@ -38,10 +40,6 @@ class App < Sinatra::Base
 
     shop = request.env['HTTP_X_SHOPIFY_SHOP_DOMAIN']
 
-    halt 403, "You're not authorized to perform this action" unless Shop.first(name: shop)
-
-    instantiate_session(shop)
-
     json_data = JSON.parse data
 
     gateway = json_data['gateway']
@@ -69,8 +67,11 @@ class App < Sinatra::Base
       payment = results.first
 
       payment_id = payment['collection']['id'].to_s
+      payment_status = payment['collection']['status'].to_s
 
-      mp.refund_payment(payment_id)
+      unless payment_status == 'refunded'
+        logger.info mp.refund_payment(payment_id)
+      end
     end
 
     def instantiate_session(shop)
