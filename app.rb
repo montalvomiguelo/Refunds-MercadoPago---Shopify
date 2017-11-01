@@ -1,10 +1,7 @@
-require './models/shop'
-require 'mercadopago'
-
 class App < Sinatra::Base
   API_KEY = ENV['API_KEY']
   API_SECRET = ENV['API_SECRET']
-  APP_URL = 'cd7c2896.ngrok.io'
+  APP_URL = 'mp-auto-refund.herokuapp.com'
 
   get '/install' do
     shop = params[:shop]
