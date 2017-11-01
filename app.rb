@@ -58,11 +58,11 @@ class App < Sinatra::Base
     def refund(checkout_id)
       mp = MercadoPago.new(ENV['CLIENT_ID'], ENV['CLIENT_SECRET'])
 
-      response = mp.get("/collections/search?external_reference=#{checkout_id}")['response']
+      response = mp.search_payment(id: nil, site_id: nil, external_reference: checkout_id)['response']
 
       results = response['results']
 
-      return unless results.any?
+      return if results.empty?
 
       payment = results.first
 
