@@ -1,3 +1,5 @@
+require './models/shop'
+
 class App < Sinatra::Base
   API_KEY = ENV['API_KEY']
   API_SECRET = ENV['API_SECRET']
@@ -21,7 +23,7 @@ class App < Sinatra::Base
 
     get_shop_access_token!(shop, API_KEY, API_SECRET, code)
 
-    'Valid hmac'
+    Shop.first(name: shop).inspect
   end
 
   helpers do
@@ -35,6 +37,8 @@ class App < Sinatra::Base
     end
 
     def get_shop_access_token!(shop, client_id, client_secret, code)
+      return if Shop.first(name: shop)
+
       url = "https://#{shop}/admin/oauth/access_token"
 
       payload = {
@@ -49,7 +53,7 @@ class App < Sinatra::Base
 
       token = response['access_token']
 
-      puts token
+      Shop.create(name: shop, token: token)
     end
   end
 end

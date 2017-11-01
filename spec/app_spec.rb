@@ -11,8 +11,8 @@ describe App do
       follow_redirect!
     end
   end
-  describe 'Authenticates with Shopify' do
 
+  describe 'Authenticates with Shopify' do
     context 'with valid HMAC' do
       it 'validates hmac' do
         expect_any_instance_of(App).to receive(:validate_hmac!)
@@ -23,6 +23,18 @@ describe App do
       it 'gets access token from Shopify' do
         allow_any_instance_of(App).to receive(:validate_hmac!).and_return(nil)
         expect_any_instance_of(App).to receive(:get_shop_access_token!)
+        get '/auth'
+      end
+
+      it 'stores token into database' do
+        allow_any_instance_of(App).to receive(:validate_hmac!).and_return(nil)
+
+        allow_any_instance_of(App).to receive(:get_shop_access_token!) do |store, token|
+          Shop.create(name: store, token: token)
+        end
+
+        expect(Shop).to receive(:create)
+
         get '/auth'
       end
 

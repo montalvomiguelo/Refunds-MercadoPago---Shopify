@@ -7,6 +7,7 @@ gem 'sequel'
 gem 'httparty'
 gem 'shopify_api'
 gem 'dotenv'
+gem 'attr_encrypted'
 
 group :test do
   gem 'rspec'
