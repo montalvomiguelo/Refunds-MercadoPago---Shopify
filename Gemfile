@@ -9,6 +9,7 @@ gem 'shopify_api'
 gem 'dotenv'
 gem 'attr_encrypted'
 gem 'mercadopago-sdk'
+gem 'puma'
 
 group :test do
   gem 'rspec'
