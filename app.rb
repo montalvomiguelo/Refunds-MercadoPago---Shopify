@@ -11,7 +11,7 @@ class App < Sinatra::Base
 
     halt 403, "You're not authorized to perform this action" unless verify_webhook(hmac, data)
 
-    json_data = JSON.parse data
+    json_data = JSON.parse(data)
 
     gateway = json_data['gateway']
     checkout_id = json_data['checkout_id']
