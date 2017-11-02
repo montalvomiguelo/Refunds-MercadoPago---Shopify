@@ -3,10 +3,6 @@ class App < Sinatra::Base
 
   SHARED_SECRET = ENV['SHARED_SECRET']
 
-  get '/' do
-    'App is runing!'
-  end
-
   post '/webhooks/order' do
     hmac = request.env['HTTP_X_SHOPIFY_HMAC_SHA256']
 
@@ -19,10 +15,6 @@ class App < Sinatra::Base
 
     gateway = json_data['gateway']
     checkout_id = json_data['checkout_id']
-    cancelled_at = json_data['cancelled_at']
-    id = json_data['id']
-
-    logger.info({id: id, gateway: gateway, checkout_id: checkout_id, cancelled_at: cancelled_at})
 
     refund(checkout_id) if gateway == 'mercado_pago'
 
