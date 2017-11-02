@@ -3,6 +3,10 @@ class App < Sinatra::Base
 
   SHARED_SECRET = ENV['SHARED_SECRET']
 
+  get '/' do
+    'App is runing!'
+  end
+
   post '/webhooks/order' do
     hmac = request.env['HTTP_X_SHOPIFY_HMAC_SHA256']
 
