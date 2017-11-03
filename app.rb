@@ -16,13 +16,15 @@ class App < Sinatra::Base
     gateway = json_data['gateway']
     checkout_id = json_data['checkout_id']
 
-    refund(checkout_id) if gateway == 'mercado_pago'
+    if gateway == 'mercado_pago'
+      logger.info refund_order(checkout_id)
+    end
 
     return [200, 'Webhook notification received successfully']
   end
 
   helpers do
-    def refund(checkout_id)
+    def refund_order(checkout_id)
       mp = MercadoPago.new(ENV['CLIENT_ID'], ENV['CLIENT_SECRET'])
 
       response = mp.get("/collections/search?external_reference=#{checkout_id}")['response']
@@ -35,7 +37,7 @@ class App < Sinatra::Base
 
       payment_id = payment['collection']['id'].to_s
 
-      logger.info mp.refund_payment(payment_id)
+      mp.refund_payment(payment_id)
     end
 
     def verify_webhook(hmac, data)
